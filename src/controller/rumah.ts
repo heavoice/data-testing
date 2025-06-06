@@ -4,18 +4,54 @@ import prisma from "../prismaClient";
 // Fungsi untuk membuat data rumah
 export const createData = async (req: Request, res: Response) => {
   try {
-    const { lokasi, luasTanah, kamarTidur } = req.body;
+    const {
+      lokasi,
+      luasTanah,
+      kamarTidur,
+      harga,
+      jumlahKamarMandi,
+      lantai,
+      sertifikat,
+      tipeProperti,
+      tahunBangun,
+      dayaListrik,
+      garasi,
+      aksesJalan,
+      fasilitasUmum,
+      jarakkePusatKota,
+    } = req.body;
 
     // Menyimpan data rumah ke dalam database
     const rumah = await prisma.rumah.create({
       data: {
         lokasi,
-        luasTanah,
+        luasTanah, // Menyimpan luasTanah sebagai number, bukan string
         kamarTidur,
+        harga,
+        jumlahKamarMandi,
+        lantai,
+        sertifikat,
+        tipeProperti,
+        tahunBangun,
+        dayaListrik,
+        garasi,
+        aksesJalan,
+        fasilitasUmum,
+        jarakkePusatKota,
       },
     });
 
-    res.status(201).json(rumah);
+    // Menambahkan satuan pada output response
+    const rumahDenganSatuan = {
+      ...rumah,
+      luasTanah: `${rumah.luasTanah} m²`, // Menambahkan satuan pada luasTanah
+      harga: `Rp ${rumah.harga.toLocaleString()}`, // Menambahkan format Rupiah pada harga
+      dayaListrik: `${rumah.dayaListrik} VA`, // Menambahkan satuan pada dayaListrik
+      garasi: rumah.garasi ? "Ada" : "Tidak Ada", // Mengubah nilai boolean garasi menjadi string
+      jarakkePusatKota: `${rumah.jarakkePusatKota} km`, // Menambahkan satuan pada jarakkePusatKota
+    };
+
+    res.status(201).json(rumahDenganSatuan);
   } catch (error) {
     res
       .status(500)
@@ -27,7 +63,17 @@ export const createData = async (req: Request, res: Response) => {
 export const getAllData = async (req: Request, res: Response) => {
   try {
     const semuaRumah = await prisma.rumah.findMany();
-    res.json(semuaRumah);
+    // Menambahkan satuan pada setiap data rumah sebelum mengirim ke client
+    const rumahDenganSatuan = semuaRumah.map((rumah: any) => ({
+      ...rumah,
+      luasTanah: `${rumah.luasTanah} m²`, // Menambahkan satuan pada luasTanah
+      harga: `Rp ${rumah.harga.toLocaleString()}`, // Menambahkan format Rupiah pada harga
+      dayaListrik: `${rumah.dayaListrik} VA`, // Menambahkan satuan pada dayaListrik
+      garasi: rumah.garasi ? "Ada" : "Tidak Ada", // Mengubah nilai boolean garasi menjadi string
+      jarakkePusatKota: `${rumah.jarakkePusatKota} km`, // Menambahkan satuan pada jarakkePusatKota
+    }));
+
+    res.json(rumahDenganSatuan);
   } catch (error) {
     res
       .status(500)
