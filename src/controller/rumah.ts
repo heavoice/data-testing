@@ -21,11 +21,10 @@ export const createData = async (req: Request, res: Response) => {
       jarakkePusatKota,
     } = req.body;
 
-    // Menyimpan data rumah ke dalam database
     const rumah = await prisma.rumah.create({
       data: {
         lokasi,
-        luasTanah, // Menyimpan luasTanah sebagai number, bukan string
+        luasTanah,
         kamarTidur,
         harga,
         jumlahKamarMandi,
@@ -41,14 +40,13 @@ export const createData = async (req: Request, res: Response) => {
       },
     });
 
-    // Menambahkan satuan pada output response
     const rumahDenganSatuan = {
       ...rumah,
-      luasTanah: `${rumah.luasTanah} m²`, // Menambahkan satuan pada luasTanah
-      harga: `Rp ${rumah.harga.toLocaleString()}`, // Menambahkan format Rupiah pada harga
-      dayaListrik: `${rumah.dayaListrik} VA`, // Menambahkan satuan pada dayaListrik
-      garasi: rumah.garasi ? "Ada" : "Tidak Ada", // Mengubah nilai boolean garasi menjadi string
-      jarakkePusatKota: `${rumah.jarakkePusatKota} km`, // Menambahkan satuan pada jarakkePusatKota
+      luasTanah: `${rumah.luasTanah} m²`,
+      harga: `Rp ${rumah.harga.toLocaleString()}`,
+      dayaListrik: `${rumah.dayaListrik} VA`,
+      garasi: rumah.garasi ? "Ada" : "Tidak Ada",
+      jarakkePusatKota: `${rumah.jarakkePusatKota} km`,
     };
 
     res.status(201).json(rumahDenganSatuan);
@@ -63,14 +61,13 @@ export const createData = async (req: Request, res: Response) => {
 export const getAllData = async (req: Request, res: Response) => {
   try {
     const semuaRumah = await prisma.rumah.findMany();
-    // Menambahkan satuan pada setiap data rumah sebelum mengirim ke client
     const rumahDenganSatuan = semuaRumah.map((rumah: any) => ({
       ...rumah,
-      luasTanah: `${rumah.luasTanah} m²`, // Menambahkan satuan pada luasTanah
-      harga: `Rp ${rumah.harga.toLocaleString()}`, // Menambahkan format Rupiah pada harga
-      dayaListrik: `${rumah.dayaListrik} VA`, // Menambahkan satuan pada dayaListrik
-      garasi: rumah.garasi ? "Ada" : "Tidak Ada", // Mengubah nilai boolean garasi menjadi string
-      jarakkePusatKota: `${rumah.jarakkePusatKota} km`, // Menambahkan satuan pada jarakkePusatKota
+      luasTanah: `${rumah.luasTanah} m²`,
+      harga: `Rp ${rumah.harga.toLocaleString()}`,
+      dayaListrik: `${rumah.dayaListrik} VA`,
+      garasi: rumah.garasi ? "Ada" : "Tidak Ada",
+      jarakkePusatKota: `${rumah.jarakkePusatKota} km`,
     }));
 
     res.json(rumahDenganSatuan);
@@ -80,5 +77,3 @@ export const getAllData = async (req: Request, res: Response) => {
       .json({ message: "Terjadi kesalahan saat mengambil data rumah", error });
   }
 };
-
-module.exports = { createData, getAllData };
