@@ -4,6 +4,8 @@ import RumahRoutes from "./route/rumah";
 const app = express();
 
 app.use(express.json());
-app.use(RumahRoutes);
+
+// Prefix semua route di rumah.ts dengan /api
+app.use("/api", RumahRoutes);
 
 export default app;
