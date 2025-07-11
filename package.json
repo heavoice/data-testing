@@ -18,6 +18,7 @@
   "devDependencies": {
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.30",
+    "@vercel/node": "^5.3.5",
     "nodemon": "^3.1.10",
     "prisma": "^6.9.0",
     "ts-node": "^10.9.2",
