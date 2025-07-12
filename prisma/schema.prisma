@@ -8,20 +8,20 @@ datasource db {
 }
 
 model Rumah {
-  id                 Int      @id @default(autoincrement())
-  lokasi             String
-  luasTanah          Float
-  kamarTidur         Int
-  harga              Float
-  jumlahKamarMandi   Int
-  lantai             Int
-  sertifikat         String
-  tipeProperti       String
-  tahunBangun        Int
-  dayaListrik        Int
-  garasi             Boolean
-  aksesJalan         String
-  fasilitasUmum      String
-  jarakkePusatKota   Float
-  createdAt          DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  lokasi           String
+  luasTanah        Float
+  kamarTidur       Int
+  harga            Float
+  jumlahKamarMandi Int
+  lantai           Int
+  sertifikat       String
+  tipeProperti     String
+  tahunBangun      Int
+  dayaListrik      Int
+  garasi           Boolean
+  aksesJalan       String
+  fasilitasUmum    String
+  jarakkePusatKota Float
+  createdAt        DateTime @default(now())
 }
